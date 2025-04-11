@@ -132,6 +132,8 @@ public final class Data {
        } else {
            dia++;
        }
+       
+       JOptionPane.showMessageDialog(null,"A data foi avançada em 1 dia, data atual: "+DtString());
    }
    
    public int[] arrayData(){
@@ -142,7 +144,7 @@ public final class Data {
        return vetData;
    }
    
-   public int comparar(Data a, Data b){
+   public static int comparar(Data a, Data b){
        if(a.ano>b.ano){
            return 1;
        } else if(a.ano<b.ano){

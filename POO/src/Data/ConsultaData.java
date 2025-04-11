@@ -44,10 +44,13 @@ public class ConsultaData {
         Data[] datas = new Data[10];
         while(loop){
             Object[] options;
-            if(dataQuant < 2){
-               options = new Object[]{"Sair", "Nova Data"};
-            } else{
-               options = new Object[]{"Sair", "Nova Data", "Comparar datas"}; 
+            if(dataQuant == 0){
+               options = new Object[]{"Sair", "Nova Data"}; 
+            }
+            else if(dataQuant < 2){
+               options = new Object[]{"Sair", "Nova Data", "Avançar Data"};
+            } else {
+               options = new Object[]{"Sair", "Nova Data","Avançar Data", "Comparar datas"}; 
             }
             int menu = JOptionPane.showOptionDialog(null,
                     "Oque deseja fazer?\n\nDatas cadastradas: "+dataQuant,
@@ -56,7 +59,7 @@ public class ConsultaData {
                     JOptionPane.QUESTION_MESSAGE,
                     null,
                     options,
-                    options[0]);
+                    options[1]);
             switch (menu) {
                 case 0 -> {
                     JOptionPane.showMessageDialog(null, "Obrigado por participar...");
@@ -114,7 +117,32 @@ public class ConsultaData {
                         }
                         
                     }
-                case 2 -> {
+                case 2 ->{
+                    boolean loop1 = true;
+                    int value;
+                     while(loop1){
+                        Object[] datasStr;
+                        datasStr = new Object[dataQuant];
+                        
+                        for(int i = 0; i < dataQuant;i++){
+                                datasStr[i] = datas[i].DtString();
+                            }
+                            value = JOptionPane.showOptionDialog(null,
+                                "Selecione a data para ser avançada em 1 dia",
+                                "Avançar Data",
+                                JOptionPane.DEFAULT_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                datasStr,
+                                datasStr[0]);
+                            if(value == JOptionPane.CLOSED_OPTION){
+                                loop1 = false;   
+                            } else{
+                                datas[value].avancar();
+                            }
+                     }
+                }
+                case 3 -> {
                     boolean loop1 = true;
                     int par1, par2;
                     while(loop1){
