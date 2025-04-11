@@ -50,7 +50,7 @@ public final class Data {
     }
     
     private boolean validaMes(int mes){
-        return (mes < 12) && (mes > 0);
+        return (mes <= 12) && (mes > 0);
     }
     
     /**
@@ -142,5 +142,25 @@ public final class Data {
        return vetData;
    }
    
-   
+   public int comparar(Data a, Data b){
+       if(a.ano>b.ano){
+           return 1;
+       } else if(a.ano<b.ano){
+           return -1;
+       } else{
+           if(a.mes>b.mes){
+               return 1;
+           } else if(a.mes<b.mes){
+               return -1;
+           } else{
+               if(a.dia>b.dia){
+                   return 1;
+               } else if(a.dia<b.dia){
+                   return -1;
+               } else{
+                   return 0;
+               }
+           }
+       }
+   }
 }
