@@ -7,6 +7,12 @@ public final class Data {
     private int dia;
     private int mes;
     private int ano;
+    
+    
+    
+    public boolean validaData (){
+        return (validaDia(dia) && validaMes(mes) && validaAno(ano));
+    }
      
     private boolean Trinta(){
         return (mes == 4 || mes == 6 || mes == 9 || mes == 11);
@@ -75,10 +81,16 @@ public final class Data {
         }
     }
     
+    /**
+     *
+     * @param dia
+     * @param mes
+     * @param ano
+     */
     public Data(int dia, int mes, int ano) {        
-        setAno(dia);
+        setAno(ano);
         setMes(mes);
-        setDia(ano);
+        setDia(dia);
     }
     
    public Data(){
@@ -87,7 +99,19 @@ public final class Data {
        this.mes = dataUser.getMonthValue();
        this.ano = dataUser.getYear();
    }   
-   
+
+    public int getDia() {
+        return dia;
+    }
+
+    public int getMes() {
+        return mes;
+    }
+
+    public int getAno() {
+        return ano;
+    }
+
     /**
      *
      * @return retorna a data cadastrada no objeto no formato xx/xx/xxxx
@@ -118,9 +142,5 @@ public final class Data {
        return vetData;
    }
    
-   
-   public void comparar(){
-       
-   }
    
 }

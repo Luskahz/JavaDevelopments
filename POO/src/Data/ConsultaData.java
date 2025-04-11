@@ -39,46 +39,125 @@ public class ConsultaData {
      */
 
     public static void main(String[] args) {
+        int dataQuant = 0;
         boolean loop = true;
         Data[] datas = new Data[10];
         while(loop){
-            JOptionPane.showMessageDialog(null, "Comparador de datas...");
-            Object[] options = {"Nova Data", "Comparar Datas", "Sair"}; 
+            Object[] options;
+            if(dataQuant < 2){
+               options = new Object[]{"Sair", "Nova Data"};
+            } else{
+               options = new Object[]{"Sair", "Nova Data", "Comparar datas"}; 
+            }
             int menu = JOptionPane.showOptionDialog(null,
-                    "Oque deseja fazer?",
+                    "Oque deseja fazer?\n\nDatas cadastradas: "+dataQuant,
                     "Pagina Inicial",
                     JOptionPane.DEFAULT_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
                     null,
                     options,
                     options[0]);
-            if(menu == 2){
-                JOptionPane.showMessageDialog(null, "Obrigado por participar...");
-                loop = false;
-            } else if(menu == 1) {
-                JOptionPane.showMessageDialog(null, "a seguir escolha uma das datas para o primeiro parametro....");
-                boolean loop2 = true;
-                while(loop2){
-                    Object[] datasDisp = datas;
+            switch (menu) {
+                case 0 -> {
+                    JOptionPane.showMessageDialog(null, "Obrigado por participar...");
+                    loop = false;
+                }
+                
+                case 1 -> {
+                    boolean loop3 = true, loop4 = true, loop5 = true;
+                    String a = null, m = null, d= null;
                     
-                    
-                    
-                    
-                    
-                    
-                    
+                    while(loop3){
+                        a = JOptionPane.showInputDialog(null, "Insira o valor do ANO(xxxx):", "Criando uma nova Data", JOptionPane.QUESTION_MESSAGE);
+                        if(a == null){
+                            loop3 = false;
+                            break;
+                        }
+                    }
+                        
+                    while(loop3 && loop4){
+                        m = JOptionPane.showInputDialog(null, "Insira o valor do MÊS(xx):", "Criando uma nova Data", JOptionPane.QUESTION_MESSAGE);
+                        if(m == null){
+                            loop4 = false;
+                            break;
+                        }
+                    }
+                    while(loop3 && loop4 && loop5){
+                        d = JOptionPane.showInputDialog(null, "Insira o valor do DIA(xx):", "Criando uma nova Data", JOptionPane.QUESTION_MESSAGE);
+                        if(d == null){
+                            loop5 = false;
+                            break;
+                        }
+                    }
+                        if(a != null && m != null && d != null) {
+                            try{
+                                int A = Integer.parseInt(a);
+                                int M = Integer.parseInt(m);
+                                int D = Integer.parseInt(d);
+                                Data novaData = new Data(D, M, A);
+                                if(novaData.validaData()){
+                                    JOptionPane.showMessageDialog(null, "Entrada valida, data cadastrada..");
+                                    datas[dataQuant] = novaData;
+                                    dataQuant++;
+                                    loop3 = false;
+                        } else{
+                            
+                        }
+                            } catch (NumberFormatException e){
+                                JOptionPane.showMessageDialog(null, "Insira apenas números válidos para o ano, mês e dia.");
+                            }
+                        } else {
+                            
+                        }
+                        
+                    }
+                case 2 -> {
+                    boolean loop2 = true;
+                    int par1, par2;
+                    while(loop2){
+                        Object[] datasStr;
+                        datasStr = new Object[dataQuant];
+                        
+                        for(int i = 0; i<dataQuant;i++){
+                            if(datas[i] == null){
+                                datasStr[i] = "---";
+                            }else{
+                                datasStr[i] = datas[i].DtString();
+                            }
+                        }
+                        int selection1 = JOptionPane.showOptionDialog(null,
+                                "Selecione a primeira data",
+                                "Primeiro parametro da comparação",
+                                JOptionPane.DEFAULT_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                datasStr,
+                                datasStr[0]);
+                        
+                            if(selection1 == JOptionPane.CLOSED_OPTION){
+                                loop2 = false;
+                            } else{
+                                int selection2 = JOptionPane.showOptionDialog(null,
+                                "Selecione a segunda data",
+                                "Segundo parametro da comparação",
+                                JOptionPane.DEFAULT_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                datasStr,
+                                datasStr[0]);    
+                                if(selection2 == JOptionPane.CLOSED_OPTION){
+                                }
+                            par2 = selection2;
+                                
+                            }
+                            par1 = selection1;
+        }
+                }
+                default -> {
+                    JOptionPane.showMessageDialog(null, "Obrigado por participar...");
+                    loop = false;
                 }
             }
-            
-            
-            
-            
-            
-            
-            
-            
         }
-        
     }
-    
 }
