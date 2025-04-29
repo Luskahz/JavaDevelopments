@@ -19,15 +19,14 @@ public class classRH {
         int qtd = 10, contAdm=0, contTec=0, contFunc = 0;
         Administrativo[] administrativo = new Administrativo[qtd];
         Tecnico[] tecnico = new Tecnico[qtd];
-        boolean loop = true;
-
-        while(loop){
-            Object[] options;
-            if(contFunc == 0){
-               options = new Object[]{"Sair", "Novo Funcionário"}; 
-            } else {
-               options = new Object[]{"Sair", "Novo Funcionário" ,"Gerenciar Funcionários"}; 
-            }
+        Object[] Categorias = new Object[]{"Administrativo", "Técnico"};
+        
+        
+        
+        boolean loopMenu = true;
+        menuLoop:
+        while(loopMenu){
+            Object[] options = (contFunc == 0) ? new Object[]{"Sair", "Novo Funcionário"} : new Object[]{"Sair", "Novo Funcionário", "Gerenciar Funcionários"};
             int menu = JOptionPane.showOptionDialog(null,
                     "Oque deseja fazer?\n\nFuncionarios cadastradas: "+contFunc,
                     "Pagina Inicial",
@@ -38,52 +37,61 @@ public class classRH {
                     options[1]);
             
             switch (menu){
-                case 0 -> {
-                    JOptionPane.showMessageDialog(null, "Obrigado por participar...");
-                    loop = false;
-                }
-                case 1 ->{
-                    boolean loop2=true;
-                    while(loop2){
-                        boolean loop3=true;
-                        Object[] Categorias = new Object[]{"Administrativo", "Técnico"};
-                        Integer.parseInt("1");
-                          String nome = null;
-                            while (nome == null || nome.trim().isEmpty()) {
-                                nome = JOptionPane.showInputDialog(null, "Insira o nome do Novo Funcionário:");
-                                if (nome == null) return; // Se cancelar, sai do case
+                case 0 -> { JOptionPane.showMessageDialog(null, "Obrigado por participar..."); loopMenu = false; } // caso o user saia
+                case 1 ->{ boolean loopCriar=true;
+                    String nome;
+                        while (true) {
+                        nome = JOptionPane.showInputDialog(null, "Insira o nome do Novo Funcionário:");
+                        if (nome == null) {
+                            continue menuLoop;   // cancelou → volta ao menu
+                        }
+                        if (nome.trim().isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Nome não pode ficar em branco.");
+                        } else {
+                            break;
+                        }
+                    }// validação do nome
+                    Double salario;
+                        while (true) {
+                        String salarioStr = JOptionPane.showInputDialog(null, "Insira o salário base do Novo Funcionário:");
+                        if (salarioStr == null) {
+                            continue menuLoop; // cancelou → volta ao menu
+                        }
+                        try {
+                            salario = Double.parseDouble(salarioStr);
+                            if (salario < 0) {
+                                JOptionPane.showMessageDialog(null, "O salário não pode ser negativo.");
+                            } else {
+                                break;
                             }
-                          Double salario = null;
-                            while (salario == null) {
-                                try {
-                                    String salarioStr = JOptionPane.showInputDialog(null, "Insira o salário base do Novo Funcionário:");
-                                    if (salarioStr == null) return; // Se cancelar, sai do case
-                                    salario = Double.parseDouble(salarioStr);
-                                    if (salario < 0) {
-                                        JOptionPane.showMessageDialog(null, "O salário não pode ser negativo.");
-                                        salario = 1.00;
-                                    }
-                                } catch (NumberFormatException e) {
-                                    JOptionPane.showMessageDialog(null, "Valor inválido para salário. Insira um número válido.");
+                        } catch (NumberFormatException e) {
+                            JOptionPane.showMessageDialog(null, "Valor inválido para salário. Insira um número válido.");
+                            
+                        }
+                    }// validação do salario
+                    String matricula;
+                        while (true) {
+                            matricula = JOptionPane.showInputDialog(null, "Insira a matrícula do Novo Funcionário:");
+                                if (matricula == null) {
+                                    continue menuLoop; // cancelou → volta ao menu
                                 }
-                            }
-                            String matricula = null;
-                                while (matricula == null || matricula.trim().isEmpty()) {
-                                    matricula = JOptionPane.showInputDialog(null, "Insira a matrícula do Novo Assistente:");
-                                    if (matricula == null) return; // Se cancelar, sai do case
+                                if (matricula.trim().isEmpty()) {
+                                    JOptionPane.showMessageDialog(null, "Matrícula não pode ficar em branco.");
+                                } else {
+                                    break;
                                 }
-
-                        while(loop3){
-                            int categ = JOptionPane.showOptionDialog(null,
-                                    "Qual a categoria do assistente?",
-                                    "Categoria", 
-                                    JOptionPane.DEFAULT_OPTION,
-                                    JOptionPane.QUESTION_MESSAGE,
-                                    null,
-                                    Categorias,
-                                    Categorias[0]);
-                            switch (categ){
-                                case 0 -> {
+                            } // validação da matricula
+                        
+                    int categ = JOptionPane.showOptionDialog(null,
+                            "Qual a categoria do assistente?",
+                            "Categoria", 
+                            JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            Categorias,
+                            Categorias[0]);
+                    switch (categ){
+                        case 0 -> {
                                     // Administrativo: precisa de Turno
                                     String turno = null;
                                     while (turno == null || turno.trim().isEmpty()) {
@@ -93,9 +101,8 @@ public class classRH {
                                         contAdm++;
                                         contFunc++;
                                     }
-                                    loop3 = false; // Sai do loop da categoria
-                                }
-                                case 1 -> {
+                                } //caso o assistente seja administrativo
+                        case 1 -> {
 
                                     Double bonus = null;
                                     while (bonus == null) {
@@ -114,23 +121,78 @@ public class classRH {
                                             JOptionPane.showMessageDialog(null, "Valor inválido para bônus. Insira um número válido.");
                                         }
                                     }
-                                    loop3 = false; // Sai do loop da categoria
-                                }
-                                default -> {
-                                    JOptionPane.showMessageDialog(null, "Selecione uma categoria válida.");
-                                }
-                            }   
+                                } // caso o assistente seja tecnico
+                        default -> {
+                            continue;
                         }
-                        loop2 = false;
                     }
-                }
-                default ->{
-                    JOptionPane.showMessageDialog(null, "Obrigado por participar...");
-                    loop = false;
-                }
-            }
-        }
-        
-    }
-    
+                } // caso o user escolha criar um novo funcionario
+                case 2 ->{
+                    categoria:
+                    while(true){
+                        int categ = JOptionPane.showOptionDialog(null,
+                                "Qual Categoria deseja gerenciar?",
+                                "Gerenciamento",
+                                JOptionPane.DEFAULT_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                Categorias,
+                                Categorias[0]);
+                        switch (categ) {
+                            default ->{
+                                continue menuLoop;
+                            }
+                            case 0 -> {
+                                Object[] AdmStr = new Object[contAdm];
+                                for (int i = 0; i < contAdm; i++) {
+                                    AdmStr[i] = administrativo[i].nomeToString();
+                                }
+                                int func = JOptionPane.showOptionDialog(null,
+                                        "Qual Assistente Administrativo deseja gerenciar?",
+                                        "Assistentes Administrativos",
+                                        JOptionPane.DEFAULT_OPTION,
+                                        JOptionPane.QUESTION_MESSAGE,
+                                        null,
+                                        AdmStr,
+                                        AdmStr[0]);
+                                if (func == JOptionPane.CLOSED_OPTION) {
+                                       continue categoria;
+                                    } else{
+                                        JOptionPane.showMessageDialog(null, administrativo[func].exibeDados());
+                                }
+                            }
+                            case 2 -> {
+                                voltar:
+                                while (true) {
+                                    Object[] TecStr = new Object[contTec];
+                                    for (int i = 0; i < contAdm; i++) {
+                                        TecStr[i] = tecnico[i].nomeToString();
+                                    }
+                                    int func = JOptionPane.showOptionDialog(null,
+                                            "Qual Assistente Tecnico deseja gerenciar?",
+                                            "Assistentes Tecnicos",
+                                            JOptionPane.DEFAULT_OPTION,
+                                            JOptionPane.QUESTION_MESSAGE,
+                                            null,
+                                            TecStr,
+                                            TecStr[0]);
+                                    if (func == JOptionPane.CLOSED_OPTION) {
+                                       continue categoria;
+                                    } else{
+                                        JOptionPane.showMessageDialog(null, tecnico[func].exibeDados());
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                        
+                    } // caso o user escolha gerenciar os funcionarios existentes
+                default -> { 
+                    return;
+                }    // caso o user saia pelo X
+        } //loopmenu
 }
+}
+}
+

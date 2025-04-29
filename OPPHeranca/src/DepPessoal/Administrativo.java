@@ -39,5 +39,7 @@ public class Administrativo extends Assistente{
     }
     
     
-    
+    public String nomeToString(){
+       return super.getNome();
+    }
 }

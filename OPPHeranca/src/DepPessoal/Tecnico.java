@@ -37,6 +37,10 @@ public class Tecnico extends Assistente {
        double ganho = super.calculaGanhoAnual();
            return ganho + (ganho*((Bonus/100)+1)); 
        }
+    
+
+    public String nomeToString(){
+       return super.getNome();
     }
 
-
+}
